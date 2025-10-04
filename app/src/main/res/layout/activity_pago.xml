@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#657595"
+    tools:context=".Pago">
+
+    <view
+        android:id="@+id/view2"
+        class="com.google.android.material.card.MaterialCardView"
+        android:layout_width="310dp"
+        android:layout_height="541dp"
+        android:background="#D9D9D9"
+        android:backgroundTint="#FFFFFF"
+        android:padding="@dimen/fab_margin"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="84dp" />
+
+    <TextView
+        android:id="@+id/titulo_pagos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pagos"
+        tools:layout_editor_absoluteX="68dp"
+        tools:layout_editor_absoluteY="97dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Numero de carnet"
+        tools:layout_editor_absoluteX="104dp"
+        tools:layout_editor_absoluteY="222dp" />
+
+    <view
+        android:id="@+id/view3"
+        class="com.google.android.material.card.MaterialCardView"
+        android:layout_width="269dp"
+        android:layout_height="174dp"
+        android:backgroundTint="#EFEDEE"
+        tools:layout_editor_absoluteX="71dp"
+        tools:layout_editor_absoluteY="369dp" />
+
+    <EditText
+        android:id="@+id/editTextDate3"
+        style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox.Dense"
+        android:layout_width="152dp"
+        android:layout_height="48dp"
+        android:autoText="false"
+        android:autofillHints=""
+        android:ems="10"
+        android:inputType="date"
+        android:text="20/10/2025"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="129dp"
+        tools:layout_editor_absoluteY="468dp"
+        tools:visibility="visible"
+        tools:ignore="Deprecated" />
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="210dp"
+        android:layout_height="56dp"
+        android:background="#D9D9D9"
+        android:ems="10"
+        android:hint="3030303"
+        android:inputType="text"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="100dp"
+        tools:layout_editor_absoluteY="154dp"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Monto"
+        tools:layout_editor_absoluteX="100dp"
+        tools:layout_editor_absoluteY="329dp" />
+
+    <EditText
+        android:id="@+id/editTextText3"
+        android:layout_width="210dp"
+        android:layout_height="56dp"
+        android:background="#D9D9D9"
+        android:ems="10"
+        android:hint="3000"
+        android:inputType="text"
+        tools:layout_editor_absoluteX="100dp"
+        tools:layout_editor_absoluteY="259dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="210dp"
+        android:layout_height="50dp"
+        android:text="FECHA"
+        android:textSize="34sp"
+        tools:layout_editor_absoluteX="90dp"
+        tools:layout_editor_absoluteY="394dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="136dp"
+        android:layout_height="45dp"
+        android:backgroundTint="#020202"
+        android:text="registrar"
+        app:icon="@drawable/star"
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="558dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="#8C009688"
+        android:backgroundTint="#383737"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintStart_toStartOf="@+id/view3"
+        tools:layout_editor_absoluteY="454dp"></LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/Content"
+        tools:layout_editor_absoluteX="258dp"
+        tools:layout_editor_absoluteY="394dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

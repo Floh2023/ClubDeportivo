@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#607089"
+    tools:context=".RegistroSocio">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="#8C009688"
+        android:backgroundTint="#383737"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintStart_toStartOf="@+id/view3"
+        tools:layout_editor_absoluteY="454dp"></LinearLayout>
+
+    <view
+        android:id="@+id/view4"
+        class="com.google.android.material.card.MaterialCardView"
+        android:layout_width="310dp"
+        android:layout_height="541dp"
+        android:background="#D9D9D9"
+        android:backgroundTint="#FFFFFF"
+        android:padding="@dimen/fab_margin"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="85dp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Direccion"
+        tools:layout_editor_absoluteX="104dp"
+        tools:layout_editor_absoluteY="435dp" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="136dp"
+        android:layout_height="45dp"
+        android:backgroundTint="#020202"
+        android:text="registrar"
+        app:icon="@drawable/star"
+        tools:layout_editor_absoluteX="137dp"
+        tools:layout_editor_absoluteY="500dp" />
+
+    <EditText
+        android:id="@+id/editTextText5"
+        android:layout_width="210dp"
+        android:layout_height="56dp"
+        android:background="#D9D9D9"
+        android:ems="10"
+        android:hint="Juan B. Teran"
+        android:inputType="text"
+        tools:layout_editor_absoluteX="100dp"
+        tools:layout_editor_absoluteY="368dp" />
+
+    <TextView
+        android:id="@+id/titulo_pagos2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registro de socios"
+        tools:layout_editor_absoluteX="64dp"
+        tools:layout_editor_absoluteY="100dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DNI"
+        tools:layout_editor_absoluteX="104dp"
+        tools:layout_editor_absoluteY="334dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="129dp"
+        android:layout_height="47dp"
+        android:backgroundTint="#020202"
+        android:text="Carnet"
+        app:icon="@drawable/star"
+        tools:layout_editor_absoluteX="137dp"
+        tools:layout_editor_absoluteY="556dp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre"
+        tools:layout_editor_absoluteX="104dp"
+        tools:layout_editor_absoluteY="222dp" />
+
+    <EditText
+        android:id="@+id/editTextText2"
+        android:layout_width="210dp"
+        android:layout_height="56dp"
+        android:background="#D9D9D9"
+        android:ems="10"
+        android:hint="33989833"
+        android:inputType="text"
+        tools:layout_editor_absoluteX="100dp"
+        tools:layout_editor_absoluteY="259dp" />
+
+    <EditText
+        android:id="@+id/editTextText4"
+        android:layout_width="210dp"
+        android:layout_height="56dp"
+        android:background="#D9D9D9"
+        android:ems="10"
+        android:hint="Sebastian"
+        android:inputType="text"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="100dp"
+        tools:layout_editor_absoluteY="154dp"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
