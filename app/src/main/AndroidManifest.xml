@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClubDeportivo">
         <activity
+            android:name=".Carnet"
+            android:exported="false" />
+        <activity
+            android:name=".ListaVencimiento"
+            android:exported="false" />
+        <activity
+            android:name=".Vencimiento"
+            android:exported="false" />
+        <activity
+            android:name=".Opciones"
+            android:exported="false" />
+        <activity
             android:name=".RegistroSocio"
             android:exported="false" />
         <activity
