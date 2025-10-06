@@ -6,16 +6,16 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity2 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login1);
+        setContentView(R.layout.activity_login2);
 
         Button btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
         btnIniciarSesion.setOnClickListener(v -> {
-            Intent intentarIniciarSesion = new Intent(LoginActivity.this, LoginActivity2.class);
+            Intent intentarIniciarSesion = new Intent(LoginActivity2.this, Opciones.class);
             startActivity(intentarIniciarSesion);
         });
     }

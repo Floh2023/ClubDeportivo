@@ -6,31 +6,23 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Handler
 import android.os.Looper
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
-class MainActivity : AppCompatActivity() {
+class PreviewActivity : AppCompatActivity() {
 
     private val SPLASH_TIME_OUT: Long = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_preview)
 
         Handler(Looper.getMainLooper()).postDelayed({
 
-            val intent = Intent(this, PreviewActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
 
             startActivity(intent)
 
             finish()
         }, SPLASH_TIME_OUT)
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
     }
 }
