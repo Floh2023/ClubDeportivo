@@ -1,55 +1,87 @@
 package com.example.clubdeportivo
 
+import DBHelper
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.EditText
-import android.widget.ImageView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import java.util.Calendar
-import android.app.DatePickerDialog
-import android.content.Intent
-import android.widget.Button
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Pago : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_pago)
 
-        val campoFecha = findViewById<EditText>(R.id.campoFecha)
-        //val resumenFecha = findViewById<TextView>(R.id.resumenFecha)
-        val iconoCalendario = findViewById<ImageView>(R.id.iconoCalendario)
+        // Referencias a los campos del XML
+        val carnetInput = findViewById<EditText>(R.id.editTextText)
+        val montoInput = findViewById<EditText>(R.id.editTextText3)
+        val fechaInput = findViewById<EditText>(R.id.campoFecha)
+        val btnEnviar = findViewById<MaterialButton>(R.id.btnEnviar)
+        val iconoCalendario = findViewById<android.widget.ImageView>(R.id.iconoCalendario)
 
+        val dbHelper = DBHelper(this)
+
+        // 📅 Selector de fecha
         val calendario = Calendar.getInstance()
+        val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-        val datePicker = DatePickerDialog(
-            this,
-            { _, year, month, dayOfMonth ->
-                val fechaSeleccionada = "$dayOfMonth/${month + 1}/$year"
-                campoFecha.setText(fechaSeleccionada)
-            },
-            calendario.get(Calendar.YEAR),
-            calendario.get(Calendar.MONTH),
-            calendario.get(Calendar.DAY_OF_MONTH)
-        )
+        val abrirCalendario = {
+            val año = calendario.get(Calendar.YEAR)
+            val mes = calendario.get(Calendar.MONTH)
+            val día = calendario.get(Calendar.DAY_OF_MONTH)
 
-        campoFecha.setOnClickListener { datePicker.show() }
-        iconoCalendario.setOnClickListener { datePicker.show() }
-
-
-        val btnVolver = findViewById<Button>(R.id.btnEnviar)
-        btnVolver.setOnClickListener{
-            val intentarVolver = Intent(this, Opciones::class.java)
-            startActivity(intentarVolver)
+            val selector = DatePickerDialog(this, { _, a, m, d ->
+                calendario.set(a, m, d)
+                fechaInput.setText(formato.format(calendario.time))
+            }, año, mes, día)
+            selector.show()
         }
 
+        // Abrir calendario al tocar el campo o el ícono
+        fechaInput.setOnClickListener { abrirCalendario() }
+        iconoCalendario.setOnClickListener { abrirCalendario() }
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        // 💾 Acción del botón Registrar
+        btnEnviar.setOnClickListener {
+            val carnet = carnetInput.text.toString().trim()
+            val montoText = montoInput.text.toString().trim()
+            val fecha = fechaInput.text.toString().trim()
+
+            if (carnet.isEmpty() || montoText.isEmpty() || fecha.isEmpty()) {
+                Snackbar.make(findViewById(android.R.id.content),
+                    "Complete todos los campos",
+                    Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val monto = montoText.toDoubleOrNull()
+            if (monto == null || monto <= 0) {
+                Snackbar.make(findViewById(android.R.id.content),
+                    "Monto inválido",
+                    Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // 🔹 Actualizar vencimiento del socio en la base de datos
+            val resultado = dbHelper.renovarCuota(carnet)
+
+            if (resultado > 0) {
+                Snackbar.make(findViewById(android.R.id.content),
+                    "Pago registrado correctamente ✅",
+                    Snackbar.LENGTH_SHORT).show()
+
+                carnetInput.text.clear()
+                montoInput.text.clear()
+                fechaInput.text.clear()
+            } else {
+                Snackbar.make(findViewById(android.R.id.content),
+                    "No se encontró el carnet ingresado ❌",
+                    Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 }

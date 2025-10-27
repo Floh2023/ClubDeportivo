@@ -1,69 +1,80 @@
 package com.example.clubdeportivo
 
-import android.content.Intent
+import DBHelper
 import android.os.Bundle
-import android.view.Gravity
-import androidx.activity.enableEdgeToEdge
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 
 class RegistroSocio : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_registro_socio)
 
+        val dbHelper = DBHelper(this)
 
+        val nombreInput = findViewById<EditText>(R.id.editTextText4)
+        val dniInput = findViewById<EditText>(R.id.editTextText2)
+        val direccionInput = findViewById<EditText>(R.id.editTextText5)
+        val btnEnviar = findViewById<MaterialButton>(R.id.btnEnviar)
+        val btnCarnet = findViewById<MaterialButton>(R.id.btnCarnet)
 
-        val btnCarnet = findViewById<Button>(R.id.btnCarnet)
-        btnCarnet.setOnClickListener{
-            val intentarCarnet = Intent(this, Carnet::class.java)
-            startActivity(intentarCarnet)
+        // 🔹 Botón para mostrar los carnets registrados
+        btnCarnet.setOnClickListener {
+            val lista = dbHelper.obtenerSocio()
+            val mensaje = if (lista.isEmpty()) {
+                "No hay carnets registrados"
+            } else {
+                "Carnets registrados:\n${lista.joinToString(", ")}"
+            }
+            Snackbar.make(findViewById(android.R.id.content), mensaje, Snackbar.LENGTH_LONG).show()
         }
 
-        val btnRegistrar = findViewById<Button>(R.id.btnEnviar)
-        btnRegistrar.setOnClickListener {
-            mostrarToastPersonalizado()
+        // 🔹 Botón para registrar socio nuevo
+        btnEnviar.setOnClickListener {
+            val nombre = nombreInput.text.toString().trim()
+            val dniText = dniInput.text.toString().trim()
+            val direccion = direccionInput.text.toString().trim()
+
+            if (nombre.isEmpty() || dniText.isEmpty() || direccion.isEmpty()) {
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Complete todos los campos",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            val dni = dniText.toIntOrNull()
+            if (dni == null) {
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "El DNI debe ser numérico",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            // Registrar socio con carnet y vencimiento mensual
+            val resultado = dbHelper.registrarSocio(nombre, dni, direccion)
+            if (resultado > 0) {
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Socio registrado correctamente",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                nombreInput.text.clear()
+                dniInput.text.clear()
+                direccionInput.text.clear()
+            } else {
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Error al registrar socio",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
-
-        val iconoCerrar = findViewById<ImageView>(R.id.iconoCerrar2)
-
-        iconoCerrar.setOnClickListener {
-            val intent = Intent(this, Opciones::class.java)
-            startActivity(intent)
-        }
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-    }
-
-    fun mostrarToastPersonalizado() {
-        val layout = layoutInflater.inflate(R.layout.toast_registro, null)
-        val toast = Toast(applicationContext)
-        toast.duration = Toast.LENGTH_LONG
-        toast.view = layout
-        toast.setGravity(Gravity.CENTER, 0, 0)
-
-        val btnAceptar = layout.findViewById<AppCompatButton>(R.id.btnAceptar)
-        val btnCancelar = layout.findViewById<AppCompatButton>(R.id.btnCarnet)
-
-        btnAceptar.setOnClickListener {
-            toast.cancel()
-        }
-
-        btnCancelar.setOnClickListener {
-            toast.cancel()
-        }
-
-        toast.show()
     }
 
 }

@@ -2,23 +2,30 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
 
     override fun onCreate(db: SQLiteDatabase?){
         db!!.execSQL(
-            "CREATE TABLE socios("+
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                "numero_carnet TEXT UNIQUE, "+
-                "nombre TEXT NOT NULL, "+
-                "dni INTEGER NOT NULL, "+
-                "direccion TEXT NOT NULL)"
+            "CREATE TABLE socios(" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "numero_carnet TEXT UNIQUE, " +
+                    "nombre TEXT NOT NULL, " +
+                    "dni INTEGER NOT NULL, " +
+                    "direccion TEXT NOT NULL, " +
+                    "tipo TEXT DEFAULT 'socio', " +
+                    "cuota_vencimiento TEXT" +
+                    ")"
         )
     }
+
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int){
         db!!.execSQL("DROP TABLE IF EXISTS socios")
         onCreate(db)
     }
+
     fun registrarSocio(nombre: String, dni: Int, direccion: String): Long {
         val db = writableDatabase
 
@@ -32,11 +39,17 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         }
         cursor.close()
 
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_MONTH, -1) // ayer
+        val vencimiento = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+
         val values = ContentValues().apply {
             put("numero_carnet", nuevoCarnet)
             put("nombre", nombre)
             put("dni", dni)
             put("direccion", direccion)
+            put("tipo", "socio")
+            put("cuota_vencimiento", vencimiento)
         }
 
         val resultado = db.insert("socios", null, values)
@@ -44,16 +57,92 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         return resultado
     }
 
-    fun obtenerSocio():List<String>{
+    fun registrarNoSocio(nombre: String, dni: Int, direccion: String): Long {
+        val db = writableDatabase
+
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_MONTH, 1) // vence al día siguiente
+        val vencimiento = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+
+        val values = ContentValues().apply {
+            put("nombre", nombre)
+            put("dni", dni)
+            put("direccion", direccion)
+            put("tipo", "no_socio")
+            put("cuota_vencimiento", vencimiento)
+        }
+
+        val resultado = db.insert("socios", null, values)
+        db.close()
+        return resultado
+    }
+
+    fun obtenerSocio(): List<String> {
         val db = readableDatabase
         val lista = mutableListOf<String>()
         val cursor = db.rawQuery("SELECT numero_carnet FROM socios", null)
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 lista.add(cursor.getString(0))
             } while (cursor.moveToNext())
         }
+        cursor.close()
+        db.close()
         return lista
     }
 
+    fun renovarCuota(numeroCarnet: String): Int {
+        val db = writableDatabase
+
+        val cursor = db.rawQuery("SELECT tipo FROM socios WHERE numero_carnet = ?", arrayOf(numeroCarnet))
+        if (!cursor.moveToFirst()) {
+            cursor.close()
+            db.close()
+            return 0
+        }
+
+        val tipo = cursor.getString(0)
+        cursor.close()
+
+        val calendar = Calendar.getInstance()
+        if (tipo == "socio") {
+            calendar.add(Calendar.DAY_OF_MONTH, 30)
+        } else {
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+        }
+
+        val nuevoVencimiento = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+
+        val values = ContentValues().apply {
+            put("cuota_vencimiento", nuevoVencimiento)
+        }
+
+        val filas = db.update("socios", values, "numero_carnet = ?", arrayOf(numeroCarnet))
+        db.close()
+        return filas
+    }
+
+    fun obtenerSociosVencidosHoy(): List<String> {
+        val db = readableDatabase
+        val lista = mutableListOf<String>()
+        val hoy = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+        val cursor = db.rawQuery(
+            "SELECT nombre, numero_carnet, tipo FROM socios WHERE cuota_vencimiento <= ?",
+            arrayOf(hoy)
+        )
+
+        if (cursor.moveToFirst()) {
+            do {
+                val nombre = cursor.getString(0)
+                val carnet = cursor.getString(1)
+                val tipo = cursor.getString(2)
+                lista.add("$nombre ($tipo) - Carnet: ${carnet ?: "Sin carnet"} - Vencido")
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return lista
+    }
 }

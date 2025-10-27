@@ -7,7 +7,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.content.Intent
 import android.view.View
+import android.widget.Button
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.snackbar.Snackbar
 
 class Opciones : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,26 @@ class Opciones : AppCompatActivity() {
             startActivity(intentarPagos)
         }
 
+        val usuario = intent.getStringExtra("usuario") ?: "Usuario"
+
+        Snackbar.make(findViewById(android.R.id.content),
+            "Sesión Iniciada..",
+            Snackbar.LENGTH_SHORT).show();
+
+        //Aun  no esta implementado el botton de cerrar sesion
+
+        /*val btnCerrarSesion = findViewById<Button>(R.id.btnCerrarSesion)
+        btnCerrarSesion.setOnClickListener{
+            AletDialog.Builder(this)
+                .setTitle("Cerrar Sesion")
+                .setMessage("¿Queres cerrar la sesión?")
+                .setPositiveButton("si"){_,_ ->
+                    finish()
+                }
+                .setNegativeButton("no",null)
+                .show()
+
+        }*/
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
