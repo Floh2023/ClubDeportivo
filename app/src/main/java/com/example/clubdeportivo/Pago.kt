@@ -21,6 +21,7 @@ class Pago : AppCompatActivity() {
         val montoInput = findViewById<EditText>(R.id.editTextText3)
         val fechaInput = findViewById<EditText>(R.id.campoFecha)
         val btnEnviar = findViewById<MaterialButton>(R.id.btnEnviar)
+        val btnVolver = findViewById<MaterialButton>(R.id.btnVolver)
         val iconoCalendario = findViewById<android.widget.ImageView>(R.id.iconoCalendario)
 
         val dbHelper = DBHelper(this)
@@ -82,6 +83,10 @@ class Pago : AppCompatActivity() {
                     "No se encontró el carnet ingresado ❌",
                     Snackbar.LENGTH_SHORT).show()
             }
+        }
+        // 🔹 Botón para volver a la actividad anterior
+        btnVolver.setOnClickListener {
+            finish()
         }
     }
 }

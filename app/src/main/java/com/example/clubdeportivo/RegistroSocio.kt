@@ -19,6 +19,7 @@ class RegistroSocio : AppCompatActivity() {
         val direccionInput = findViewById<EditText>(R.id.editTextText5)
         val btnEnviar = findViewById<MaterialButton>(R.id.btnEnviar)
         val btnCarnet = findViewById<MaterialButton>(R.id.btnCarnet)
+        val btnVolver = findViewById<MaterialButton>(R.id.btnVolver)
 
         // 🔹 Botón para mostrar los carnets registrados
         btnCarnet.setOnClickListener {
@@ -74,6 +75,10 @@ class RegistroSocio : AppCompatActivity() {
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
+        }
+        // 🔹 Botón para volver a la actividad anterior
+        btnVolver.setOnClickListener {
+            finish()
         }
     }
 
