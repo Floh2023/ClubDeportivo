@@ -145,4 +145,54 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         db.close()
         return lista
     }
+
+    fun obtenerSociosRegistrados(): List<String> {
+        val db = readableDatabase
+        val lista = mutableListOf<String>()
+
+        val cursor = db.rawQuery(
+            "SELECT nombre, numero_carnet, tipo FROM socios", null
+        )
+
+        if (cursor.moveToFirst()) {
+            do {
+                val nombre = cursor.getString(0)
+                val carnet = cursor.getString(1)
+                val tipo = cursor.getString(2)
+                lista.add("$nombre ($tipo) - Carnet: ${carnet ?: "Sin carnet"}")
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return lista
+    }
+
+    fun obtenerDatosCarnet(numeroCarnet: String): Map<String, String>? {
+        val db = readableDatabase
+        var datosSocio: Map<String, String>? = null
+
+        val cursor = db.rawQuery(
+            "SELECT numero_carnet, nombre, dni, direccion, tipo FROM socios WHERE numero_carnet = ?", arrayOf(numeroCarnet))
+
+        if (cursor.moveToFirst()) {
+            val carnet = cursor.getString(cursor.getColumnIndexOrThrow("numero_carnet"))
+            val nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"))
+            val dni = cursor.getString(cursor.getColumnIndexOrThrow("dni"))
+            val direccion = cursor.getString(cursor.getColumnIndexOrThrow("direccion"))
+            val tipo = cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
+
+            datosSocio = mapOf(
+                "carnet" to carnet,
+                "nombre" to nombre,
+                "dni" to dni,
+                "direccion" to direccion,
+                "tipo" to tipo
+            )
+        }
+
+        cursor.close()
+        db.close()
+        return datosSocio
+    }
 }

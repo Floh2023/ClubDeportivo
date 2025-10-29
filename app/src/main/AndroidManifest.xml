@@ -11,14 +11,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ClubDeportivo">
+
         <activity
-            android:name=".Carnet"
-            android:exported="false" />
+            android:name=".PreviewActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
-            android:name=".ListaVencimiento"
-            android:exported="false" />
+            android:name=".LoginActivity"
+            android:exported="true" /> <!-- 👈 agregado -->
         <activity
-            android:name=".Vencimiento"
+            android:name=".LoginActivity2"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".Opciones"
@@ -27,39 +37,30 @@
             android:name=".RegistroSocio"
             android:exported="false" />
         <activity
+            android:name=".ListaSocios"
+            android:exported="false" />
+        <activity
+            android:name=".Carnet"
+            android:exported="false" />
+        <activity
+            android:name=".ListaVencimiento"
+            android:exported="false" />
+        <activity
             android:name=".Pago"
             android:exported="false"
             android:theme="@style/Theme.ClubDeportivo" />
-        <activity
+        <!-- <activity
             android:name=".PagoPantalla"
+            android:exported="false" />
+            <activity
+            android:name=".Vencimiento"
             android:exported="false" />
         <activity
             android:name=".winpago"
             android:exported="false"
-            android:theme="@style/Theme.ClubDeportivo" />
-        <activity
-            android:name=".PreviewActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity2"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true"> <!-- 👈 agregado -->
+            android:theme="@style/Theme.ClubDeportivo" /> -->
 
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+
     </application>
 
 </manifest>

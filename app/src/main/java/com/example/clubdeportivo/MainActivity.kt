@@ -15,18 +15,16 @@ import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
-    private val SPLASH_TIME_OUT: Long = 1000
+    private val SPLASH_TIME_OUT: Long = 500
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-
-
         Handler(Looper.getMainLooper()).postDelayed({
 
-            val intent = Intent(this, PreviewActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
 
             startActivity(intent)
 

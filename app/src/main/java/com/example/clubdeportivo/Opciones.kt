@@ -17,6 +17,12 @@ class Opciones : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_opciones)
 
+        val listaSociosContainer = findViewById<MaterialCardView>(R.id.cardListaSocios)
+        listaSociosContainer.setOnClickListener{
+            val intentarListaSocios = Intent(this, ListaSocios::class.java)
+            startActivity(intentarListaSocios)
+        }
+
         val registroContainer = findViewById<MaterialCardView>(R.id.cardRegistro)
         registroContainer.setOnClickListener{
             val intentarRegistroSocio = Intent(this, RegistroSocio::class.java)

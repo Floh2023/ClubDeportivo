@@ -9,7 +9,7 @@ import android.os.Looper
 
 class PreviewActivity : AppCompatActivity() {
 
-    private val SPLASH_TIME_OUT: Long = 1000
+    private val SPLASH_TIME_OUT: Long = 500
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +18,7 @@ class PreviewActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
 
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
 
             startActivity(intent)
 
