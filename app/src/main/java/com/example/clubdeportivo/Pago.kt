@@ -1,6 +1,6 @@
 package com.example.clubdeportivo
 
-import DBHelper
+import com.example.clubdeportivo.DBHelper
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.EditText

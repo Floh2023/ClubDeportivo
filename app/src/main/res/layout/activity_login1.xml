@@ -20,11 +20,11 @@
         android:src="@drawable/image19" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_marginTop="610dp"
-        android:layout_marginStart="100dp"
+        android:id="@+id/btnCrearCuenta"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="610dp"
         android:background="@drawable/btn_rounded"
         android:text="Crear Cuenta" />
 

@@ -67,69 +67,41 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp">
+            android:padding="30dp">
 
-            <TextView
-                android:id="@+id/titulo_pagos2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Registro de socios"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- Nombre -->
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Nombre"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/titulo_pagos2" />
-
-            <EditText
-                android:id="@+id/editTextText4"
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp"
-                android:background="#D9D9D9"
-                android:hint="Sebastián"
-                android:inputType="text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView6" />
 
             <!-- DNI -->
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="DNI"
+                android:layout_width="200dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="40dp"
+                android:text="Usuario"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/editTextText4" />
+
+
+
 
             <EditText
                 android:id="@+id/editTextText2"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="40dp"
                 android:background="#D9D9D9"
-                android:hint="33989833"
-                android:inputType="number"
+                android:hint="admin@gmail.com"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView" />
 
-            <!-- Dirección -->
             <TextView
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Dirección"
+                android:layout_marginTop="40dp"
+                android:text="Contraseña"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/editTextText2" />
 
@@ -137,51 +109,36 @@
                 android:id="@+id/editTextText5"
                 android:layout_width="0dp"
                 android:layout_height="56dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="40dp"
                 android:background="#D9D9D9"
-                android:hint="Juan B. Terán"
+                android:hint="########"
                 android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView7" />
 
-            <!-- Botones -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEnviar"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="88dp"
                 android:backgroundTint="#020202"
-                android:text="Registrar"
+                android:text="Crear Cuenta"
                 android:textColor="#FFFFFF"
                 app:icon="@drawable/star"
                 app:iconGravity="textStart"
                 app:iconPadding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/editTextText5" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCarnet"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:backgroundTint="#020202"
-                android:text="Carnet"
-                android:textColor="#FFFFFF"
-                app:icon="@drawable/star"
-                app:iconGravity="textStart"
-                app:iconPadding="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnEnviar" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnVolver"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="16dp"
                 android:backgroundTint="#020202"
                 android:text="Volver"
                 android:textColor="#FFFFFF"

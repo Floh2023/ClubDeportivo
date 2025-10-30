@@ -1,9 +1,12 @@
+package com.example.clubdeportivo;
+
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
 
@@ -19,12 +22,56 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
                     "cuota_vencimiento TEXT" +
                     ")"
         )
+        db.execSQL(
+            """
+        CREATE TABLE usuarios(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT UNIQUE,
+            password TEXT NOT NULL
+        )
+        """
+        )
+        db.execSQL(    "INSERT OR IGNORE INTO usuarios(email, password) VALUES('admin@gmail.com', '1234')"
+        )
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int){
         db!!.execSQL("DROP TABLE IF EXISTS socios")
+        db.execSQL("DROP TABLE IF EXISTS usuarios")
         onCreate(db)
     }
+
+    fun validarUsuario(email: String, password: String): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT * FROM usuarios WHERE email = ? AND password = ?",
+            arrayOf(email, password)
+        )
+        val existe = cursor.count > 0
+        cursor.close()
+        db.close()
+        return existe
+    }
+
+    fun registrarUsuario(email: String, password: String): Boolean {
+        val db = writableDatabase
+
+        val values = ContentValues().apply {
+            put("email", email)
+            put("password", password)
+        }
+
+        return try {
+            val resultado = db.insertOrThrow("usuarios", null, values)
+            db.close()
+            resultado != -1L
+        } catch (e: Exception) {
+            db.close()
+            false
+        }
+    }
+
 
     fun registrarSocio(nombre: String, dni: Int, direccion: String): Long {
         val db = writableDatabase

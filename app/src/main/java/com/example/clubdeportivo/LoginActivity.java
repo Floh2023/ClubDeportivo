@@ -18,5 +18,10 @@ public class LoginActivity extends AppCompatActivity {
             Intent intentarIniciarSesion = new Intent(LoginActivity.this, LoginActivity2.class);
             startActivity(intentarIniciarSesion);
         });
+        Button btnCrearCuenta = findViewById(R.id.btnCrearCuenta);
+        btnCrearCuenta.setOnClickListener(v -> {
+            Intent intentarCrearCuenta = new Intent(LoginActivity.this, LoginActivity3.class);
+            startActivity(intentarCrearCuenta);
+        });
     }
 }

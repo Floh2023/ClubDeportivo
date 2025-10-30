@@ -11,17 +11,40 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity2 extends AppCompatActivity {
 
-    @Override
+    DBHelper dbHelper;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
 
+
         // login
+        dbHelper = new DBHelper(this);
+
         EditText editTextTextEmailAddress = findViewById(R.id.editTextTextEmailAddress);
         EditText editTextTextPassword = findViewById(R.id.editTextTextPassword);
         Button btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
 
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String usuario = editTextTextEmailAddress.getText().toString().trim();
+                String pass = editTextTextPassword.getText().toString().trim();
+
+                if (usuario.isEmpty() || pass.isEmpty()) {
+                    Toast.makeText(LoginActivity2.this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
+                } else if (dbHelper.validarUsuario(usuario, pass)) {
+                    Intent intent = new Intent(LoginActivity2.this, Opciones.class);
+                    intent.putExtra("usuario", usuario);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(LoginActivity2.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+       /* btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String usuario = editTextTextEmailAddress.getText().toString();
@@ -37,6 +60,6 @@ public class LoginActivity2 extends AppCompatActivity {
                     Toast.makeText(LoginActivity2.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
     }
-}
+
