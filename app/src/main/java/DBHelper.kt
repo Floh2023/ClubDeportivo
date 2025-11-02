@@ -1,5 +1,3 @@
-package com.example.clubdeportivo;
-
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -16,7 +14,8 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "numero_carnet TEXT UNIQUE, " +
                     "nombre TEXT NOT NULL, " +
-                    "dni INTEGER NOT NULL, " +
+                    "apellido TEXT NOT NULL, " +
+                    "dni INTEGER UNIQUE, " +
                     "direccion TEXT NOT NULL, " +
                     "tipo TEXT DEFAULT 'socio', " +
                     "cuota_vencimiento TEXT" +
@@ -42,6 +41,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         onCreate(db)
     }
 
+    fun registrarSocio(nombre: String, apellido: String, dni: Int, direccion: String): Long {
     fun validarUsuario(email: String, password: String): Boolean {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -93,6 +93,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         val values = ContentValues().apply {
             put("numero_carnet", nuevoCarnet)
             put("nombre", nombre)
+            put("apellido", apellido)
             put("dni", dni)
             put("direccion", direccion)
             put("tipo", "socio")
@@ -104,7 +105,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         return resultado
     }
 
-    fun registrarNoSocio(nombre: String, dni: Int, direccion: String): Long {
+    fun registrarNoSocio(nombre: String, apellido: String, dni: Int, direccion: String): Long {
         val db = writableDatabase
 
         val calendar = Calendar.getInstance()
@@ -113,6 +114,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
 
         val values = ContentValues().apply {
             put("nombre", nombre)
+            put("apellido", apellido)
             put("dni", dni)
             put("direccion", direccion)
             put("tipo", "no_socio")
@@ -241,5 +243,14 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         cursor.close()
         db.close()
         return datosSocio
+    }
+
+    fun existeDNI(dni: Int): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT id FROM socios WHERE dni = ?", arrayOf(dni.toString()))
+        val existe = cursor.count > 0
+        cursor.close()
+        db.close()
+        return existe
     }
 }

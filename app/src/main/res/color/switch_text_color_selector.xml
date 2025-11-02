@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Color cuando el componente está "checked" (Verde) -->
+    <item android:state_checked="true" android:color="#4CAF50" />
+    <!-- Color por defecto o cuando no está "checked" (Rojo) -->
+    <item android:color="#F44336" />
+</selector>
