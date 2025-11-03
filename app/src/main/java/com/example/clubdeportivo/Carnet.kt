@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.button.MaterialButton
 
 class Carnet : AppCompatActivity() {
 
@@ -59,13 +60,9 @@ class Carnet : AppCompatActivity() {
             val tvDni = findViewById<TextView>(R.id.dni)
             val tvDireccion = findViewById<TextView>(R.id.direccion)
 
-            // Asignamos los valores a los TextViews
             tvNumeroSocio.text = "Número de socio: ${datos["carnet"]}"
-
-            // Suponemos que el nombre completo está en un solo campo.
-            // Si tienes nombre y apellido por separado, debes ajustar la BD y DBHelper.
             tvNombre.text = "Nombre: ${datos["nombre"]}"
-            tvApellido.text = "" // Ocultamos o vaciamos el campo apellido si no existe
+            tvApellido.text = "Apellido: ${datos["apellido"]}"
             tvDni.text = "DNI: ${datos["dni"]}"
             tvDireccion.text = "Dirección: ${datos["direccion"]}"
 

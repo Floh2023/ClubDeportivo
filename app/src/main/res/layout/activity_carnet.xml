@@ -168,19 +168,10 @@
                 android:gravity="start">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnGuardar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Guardar"
-                    android:textColor="#FFFFFF"
-                    android:backgroundTint="#6750A4"
-                    android:layout_marginEnd="8dp" />
-
-                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCarnet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cancelar"
+                    android:text="Volver"
                     android:textColor="#000000"
                     android:backgroundTint="#FFFFFF"
                     app:strokeColor="@android:color/black"

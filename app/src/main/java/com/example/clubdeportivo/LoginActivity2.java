@@ -1,5 +1,6 @@
 package com.example.clubdeportivo;
 
+import com.example.clubdeportivo.DBHelper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,11 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity2 extends AppCompatActivity {
 
-    DBHelper dbHelper;
+    private DBHelper dbHelper;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
-
 
         // login
         dbHelper = new DBHelper(this);

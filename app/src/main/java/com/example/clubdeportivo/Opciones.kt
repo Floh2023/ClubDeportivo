@@ -8,20 +8,43 @@ import androidx.core.view.WindowInsetsCompat
 import android.content.Intent
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 
 class Opciones : AppCompatActivity() {
+    private lateinit var dbHelper: DBHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_opciones)
 
+        dbHelper = DBHelper(this)
+
         val listaSociosContainer = findViewById<MaterialCardView>(R.id.cardListaSocios)
-        listaSociosContainer.setOnClickListener{
+        val tvContadorSocios = findViewById<TextView>(R.id.tvContadorSocios)
+        val tvContadorNoSocios = findViewById<TextView>(R.id.tvContadorNoSocios)
+        val tvTotalClientes = findViewById<TextView>(R.id.tvTotalClientes)
+
+        val cantidadSocios = dbHelper.contarSocios()
+        val cantidadNoSocios = dbHelper.contarNoSocios()
+        val totalClientes = dbHelper.contarTotalClientes()
+
+        tvContadorSocios.text = "Socios: $cantidadSocios"
+        tvContadorNoSocios.text = "No Socios: $cantidadNoSocios"
+        tvTotalClientes.text = "Total de Clientes: $totalClientes"
+
+        listaSociosContainer.setOnClickListener {
             val intentarListaSocios = Intent(this, ListaSocios::class.java)
             startActivity(intentarListaSocios)
         }
+
+        //val listaSociosContainer = findViewById<MaterialCardView>(R.id.cardListaSocios)
+        //listaSociosContainer.setOnClickListener{
+            //val intentarListaSocios = Intent(this, ListaSocios::class.java)
+            //startActivity(intentarListaSocios)
+        //}
 
         val registroContainer = findViewById<MaterialCardView>(R.id.cardRegistro)
         registroContainer.setOnClickListener{

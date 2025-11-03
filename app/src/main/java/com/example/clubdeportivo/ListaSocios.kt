@@ -108,7 +108,7 @@ class ListaSocios : AppCompatActivity() {
                     setBackgroundResource(R.drawable.circle_background)
                 }
 
-                // TextView con el texto completo (nombre y detalle que devuelve DBHelper)
+                // TextView con el texto completo (nombre y detalle que devuelve com.example.clubdeportivo.DBHelper)
                 val tvNombre = TextView(this).apply {
                     text = s
                     textSize = 16f
@@ -155,7 +155,7 @@ class ListaSocios : AppCompatActivity() {
     }
 
     // --- Helpers para parsear la línea que devuelve obtenerSociosVencidosHoy()
-    // formato esperado (por tu DBHelper): "$nombre ($tipo) - Carnet: ${carnet ?: "Sin carnet"} - Vencido"
+    // formato esperado (por tu com.example.clubdeportivo.DBHelper): "$nombre ($tipo) - Carnet: ${carnet ?: "Sin carnet"} - Vencido"
     private fun extraerCarnetDesdeLinea(linea: String): String? {
         // Buscamos "Carnet:" y tomamos la palabra siguiente hasta espacio o " -"
         val key = "Carnet:"

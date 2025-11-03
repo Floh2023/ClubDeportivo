@@ -1,10 +1,13 @@
+package com.example.clubdeportivo
+
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import java.text.SimpleDateFormat
-import java.util.*
-
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
 
@@ -41,7 +44,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         onCreate(db)
     }
 
-    fun registrarSocio(nombre: String, apellido: String, dni: Int, direccion: String): Long {
     fun validarUsuario(email: String, password: String): Boolean {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -72,8 +74,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         }
     }
 
-
-    fun registrarSocio(nombre: String, dni: Int, direccion: String): Long {
+    fun registrarSocio(nombre: String, apellido: String, dni: Int, direccion: String): Long {
         val db = writableDatabase
 
         val cursor = db.rawQuery("SELECT numero_carnet FROM socios ORDER BY id DESC LIMIT 1", null)
@@ -177,16 +178,17 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         val hoy = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
         val cursor = db.rawQuery(
-            "SELECT nombre, numero_carnet, tipo FROM socios WHERE cuota_vencimiento <= ?",
+            "SELECT nombre, apellido, numero_carnet, tipo FROM socios WHERE cuota_vencimiento <= ?",
             arrayOf(hoy)
         )
 
         if (cursor.moveToFirst()) {
             do {
                 val nombre = cursor.getString(0)
-                val carnet = cursor.getString(1)
-                val tipo = cursor.getString(2)
-                lista.add("$nombre ($tipo) - Carnet: ${carnet ?: "Sin carnet"} - Vencido")
+                val apellido = cursor.getString(1)
+                val carnet = cursor.getString(2)
+                val tipo = cursor.getString(3)
+                lista.add("$nombre $apellido ($tipo) - Carnet: ${carnet ?: "Sin carnet"} - Vencido")
             } while (cursor.moveToNext())
         }
 
@@ -200,15 +202,16 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         val lista = mutableListOf<String>()
 
         val cursor = db.rawQuery(
-            "SELECT nombre, numero_carnet, tipo FROM socios", null
+            "SELECT nombre, apellido, numero_carnet, tipo FROM socios", null
         )
 
         if (cursor.moveToFirst()) {
             do {
                 val nombre = cursor.getString(0)
-                val carnet = cursor.getString(1)
-                val tipo = cursor.getString(2)
-                lista.add("$nombre ($tipo) - Carnet: ${carnet ?: "Sin carnet"}")
+                val apellido = cursor.getString(1)
+                val carnet = cursor.getString(2)
+                val tipo = cursor.getString(3)
+                lista.add("$nombre $apellido($tipo) - Carnet: ${carnet ?: "Sin carnet"}")
             } while (cursor.moveToNext())
         }
 
@@ -222,11 +225,12 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         var datosSocio: Map<String, String>? = null
 
         val cursor = db.rawQuery(
-            "SELECT numero_carnet, nombre, dni, direccion, tipo FROM socios WHERE numero_carnet = ?", arrayOf(numeroCarnet))
+            "SELECT numero_carnet, nombre, apellido, dni, direccion, tipo FROM socios WHERE numero_carnet = ?", arrayOf(numeroCarnet))
 
         if (cursor.moveToFirst()) {
             val carnet = cursor.getString(cursor.getColumnIndexOrThrow("numero_carnet"))
             val nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"))
+            val apellido = cursor.getString(cursor.getColumnIndexOrThrow("apellido"))
             val dni = cursor.getString(cursor.getColumnIndexOrThrow("dni"))
             val direccion = cursor.getString(cursor.getColumnIndexOrThrow("direccion"))
             val tipo = cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
@@ -234,6 +238,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
             datosSocio = mapOf(
                 "carnet" to carnet,
                 "nombre" to nombre,
+                "apellido" to apellido,
                 "dni" to dni,
                 "direccion" to direccion,
                 "tipo" to tipo
@@ -252,5 +257,42 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         cursor.close()
         db.close()
         return existe
+    }
+
+    fun contarSocios(): Int {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT COUNT(*) FROM socios WHERE tipo = ?", arrayOf("socio"))
+        var count = 0
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0)
+        }
+        cursor.close()
+        db.close()
+        return count
+    }
+
+    fun contarNoSocios(): Int {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT COUNT(*) FROM socios WHERE tipo = ?", arrayOf("no_socio"))
+        var count = 0
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0)
+        }
+        cursor.close()
+        db.close()
+        return count
+    }
+
+    fun contarTotalClientes(): Int {
+        val db = readableDatabase
+        // Una consulta simple para contar todas las filas en la tabla socios es más eficiente.
+        val cursor = db.rawQuery("SELECT COUNT(*) FROM socios", null)
+        var count = 0
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0)
+        }
+        cursor.close()
+        db.close()
+        return count
     }
 }

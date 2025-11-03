@@ -1,7 +1,6 @@
 package com.example.clubdeportivo
 
 import com.example.clubdeportivo.DBHelper
-import DBHelper
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle

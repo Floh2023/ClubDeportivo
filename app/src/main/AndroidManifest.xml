@@ -64,7 +64,6 @@
             android:exported="false"
             android:theme="@style/Theme.ClubDeportivo" /> -->
 
-
     </application>
 
 </manifest>
