@@ -205,6 +205,7 @@
                 android:id="@+id/btnCarnet"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:backgroundTint="#020202"
                 android:text="Volver"
@@ -212,7 +213,6 @@
                 app:icon="@drawable/star"
                 app:iconGravity="textStart"
                 app:iconPadding="8dp"
-                android:layout_marginEnd="8dp"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="519dp" />
 

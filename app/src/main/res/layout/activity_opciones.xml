@@ -67,15 +67,14 @@
 
             <!-- Lista Clientes -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardListaSocios"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:backgroundTint="#FFFFFF"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="20dp"
-                android:id="@+id/cardListaSocios"
-                >
+                android:padding="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -109,38 +108,45 @@
                         android:paddingTop="10dp"
                         android:paddingBottom="12dp">
 
-                        <TextView
-                            android:id="@+id/tvContadorSocios"
-                            android:layout_width="0dp"
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnContadorSocios"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:text="Socios: XX"
-                            android:textColor="#3CA4E0"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:textColor="@android:color/white"
+                            android:layout_margin="4dp"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            app:cornerRadius="12dp"
+                            android:backgroundTint="#020202"/>
 
-                        <TextView
-                            android:id="@+id/tvContadorNoSocios"
-                            android:layout_width="0dp"
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnContadorNoSocios"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:text="No Socios: YY"
-                            android:textColor="#3CA4E0"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:textColor="@android:color/white"
+                            android:layout_margin="4dp"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            app:cornerRadius="12dp"
+                            android:backgroundTint="#020202"/>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Registro Clientes -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardRegistro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:backgroundTint="#FFFFFF"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="20dp"
-                android:id="@+id/cardRegistro"
-                >
+                android:padding="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -165,29 +171,54 @@
                         android:layout_height="wrap_content"
                         android:padding="12dp"/>
 
-                    <TextView
-                        android:id="@+id/tvTotalClientes"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:padding="12dp"
-                        android:text="Total de Clientes: ZZ"
-                        android:textColor="#3CA4E0"
-                        android:textSize="14sp" />
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="12dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnRegistrarCliente"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Registrar"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/white"
+                            android:layout_margin="4dp"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            app:cornerRadius="12dp"
+                            android:backgroundTint="#020202"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnTotalClientes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total Clientes: ZZ"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/white"
+                            android:layout_margin="4dp"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            app:cornerRadius="12dp"
+                            android:backgroundTint="#020202"/>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Vencimientos -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardVencimientos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:backgroundTint="#FFFFFF"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="20dp"
-                android:id="@+id/cardVencimientos"
-                >
+                android:padding="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -212,30 +243,54 @@
                         android:layout_height="wrap_content"
                         android:padding="12dp"/>
 
-                    <TextView
-                        android:text="Ir"
-                        android:textSize="14sp"
-                        android:textColor="#3CA4E0"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="12dp"
-                        />
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="12dp">
 
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnVencimientosHoy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hoy"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/white"
+                            android:layout_margin="4dp"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            app:cornerRadius="12dp"
+                            android:backgroundTint="#020202"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnVencimientosSemana"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Esta semana"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/white"
+                            android:layout_margin="4dp"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            app:cornerRadius="12dp"
+                            android:backgroundTint="#020202"/>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Pagos -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardPagos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:backgroundTint="#FFFFFF"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="20dp"
-                android:id="@+id/cardPagos"
-                >
+                android:padding="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -260,18 +315,46 @@
                         android:layout_height="wrap_content"
                         android:padding="12dp"/>
 
-                    <TextView
-                        android:text="Ir"
-                        android:textSize="14sp"
-                        android:textColor="#3CA4E0"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="12dp"/>
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="12dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnRegistrarPago"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Registrar"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/white"
+                            android:layout_margin="4dp"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            app:cornerRadius="12dp"
+                            android:backgroundTint="#020202"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnHistorialPagos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Historial"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/white"
+                            android:layout_margin="4dp"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            app:cornerRadius="12dp"
+                            android:backgroundTint="#020202"/>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

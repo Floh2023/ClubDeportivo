@@ -23,9 +23,9 @@ class Opciones : AppCompatActivity() {
         dbHelper = DBHelper(this)
 
         val listaSociosContainer = findViewById<MaterialCardView>(R.id.cardListaSocios)
-        val tvContadorSocios = findViewById<TextView>(R.id.tvContadorSocios)
-        val tvContadorNoSocios = findViewById<TextView>(R.id.tvContadorNoSocios)
-        val tvTotalClientes = findViewById<TextView>(R.id.tvTotalClientes)
+        val tvContadorSocios = findViewById<Button>(R.id.btnContadorSocios)
+        val tvContadorNoSocios = findViewById<Button>(R.id.btnContadorNoSocios)
+        val tvTotalClientes = findViewById<Button>(R.id.btnTotalClientes)
 
         val cantidadSocios = dbHelper.contarSocios()
         val cantidadNoSocios = dbHelper.contarNoSocios()
