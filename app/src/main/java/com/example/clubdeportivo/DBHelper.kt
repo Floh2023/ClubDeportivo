@@ -9,7 +9,11 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
+class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,3) {
+
+    companion object {
+        const val TABLE_PAGOS = "pagos"
+    }
 
     override fun onCreate(db: SQLiteDatabase?){
         db!!.execSQL(
@@ -33,17 +37,96 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         )
         """
         )
-        db.execSQL(    "INSERT OR IGNORE INTO usuarios(email, password) VALUES('admin@gmail.com', '1234')"
+        db.execSQL(    "INSERT OR IGNORE INTO usuarios(email, password) VALUES('admin', '1234')"
         )
-
+        db!!.execSQL(
+            """
+        CREATE TABLE $TABLE_PAGOS (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            fecha_pago TEXT NOT NULL,
+            dni_socio INTEGER NOT NULL,
+            tipo_socio TEXT NOT NULL,
+            monto REAL NOT NULL
+        )
+        """
+        )
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int){
         db!!.execSQL("DROP TABLE IF EXISTS socios")
         db.execSQL("DROP TABLE IF EXISTS usuarios")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_PAGOS")
         onCreate(db)
     }
 
+    fun getAllPagos(): List<Map<String, String>> {
+        val db = readableDatabase
+        val listaPagos = mutableListOf<Map<String, String>>()
+        val cursor = db.rawQuery("SELECT fecha_pago, dni_socio, tipo_socio, monto FROM $TABLE_PAGOS ORDER BY id DESC", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val dniIndex = cursor.getColumnIndexOrThrow("dni_socio")
+                val fechaIndex = cursor.getColumnIndexOrThrow("fecha_pago")
+                val tipoIndex = cursor.getColumnIndexOrThrow("tipo_socio")
+                val montoIndex = cursor.getColumnIndexOrThrow("monto")
+
+                val dniValue = cursor.getInt(dniIndex).toString()
+
+                val pago = mapOf(
+                    "fecha" to cursor.getString(fechaIndex),
+                    "dni" to dniValue,
+                    "tipo" to cursor.getString(tipoIndex),
+                    "monto" to cursor.getDouble(montoIndex).toString()
+                )
+                listaPagos.add(pago)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        //db.close()
+        return listaPagos
+    }
+    fun getVencimientosHoyCount(): Int {
+        val db = this.readableDatabase
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val fechaHoy = sdf.format(Date())
+
+        val query = "SELECT COUNT(*) FROM socios WHERE cuota_vencimiento = ?"
+        val cursor = db.rawQuery(query, arrayOf(fechaHoy))
+
+        var count = 0
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0)
+        }
+        cursor.close()
+        db.close()
+        return count
+    }
+
+    fun getVencimientosSemanaCount(): Int {
+        val db = this.readableDatabase
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        // Obtener la fecha de hoy
+        val calendar = Calendar.getInstance()
+        val fechaHoy = sdf.format(calendar.time)
+
+        // Obtener la fecha de fin de semana (hoy + 7 días)
+        calendar.add(Calendar.DAY_OF_YEAR, 7)
+        val fechaFinSemana = sdf.format(calendar.time)
+
+        // Consulta para contar los vencimientos entre hoy y dentro de 7 días
+        // El nombre de la columna en tu tabla es "cuota_vencimiento"
+        val query = "SELECT COUNT(*) FROM socios WHERE cuota_vencimiento >= ? AND cuota_vencimiento <= ?"
+        val cursor = db.rawQuery(query, arrayOf(fechaHoy, fechaFinSemana))
+
+        var count = 0
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0)
+        }
+        cursor.close()
+        db.close()
+        return count
+    }
     fun validarUsuario(email: String, password: String): Boolean {
         val db = readableDatabase
         val cursor = db.rawQuery(
@@ -74,10 +157,59 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         }
     }
 
-    fun registrarSocio(nombre: String, apellido: String, dni: Int, direccion: String): Long {
+    fun getTipoSocioPorDNI(dni: String): String? {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT tipo FROM socios WHERE dni = ?", arrayOf(dni))
+        var tipo: String? = null
+        if (cursor.moveToFirst()) {
+            tipo = cursor.getString(cursor.getColumnIndexOrThrow("tipo"))
+        }
+        cursor.close()
+        db.close()
+        return tipo
+    }
+
+    fun renovarCuotaPorDNI(dni: String): Int {
         val db = writableDatabase
 
-        val cursor = db.rawQuery("SELECT numero_carnet FROM socios ORDER BY id DESC LIMIT 1", null)
+        val cursor = db.rawQuery("SELECT tipo FROM socios WHERE dni = ?", arrayOf(dni))
+        if (!cursor.moveToFirst()) {
+            cursor.close()
+            db.close()
+            return 0 // No se encontró el DNI
+        }
+
+        val tipo = cursor.getString(0)
+        cursor.close()
+
+        val calendar = Calendar.getInstance()
+        if (tipo == "socio") {
+            calendar.add(Calendar.DAY_OF_MONTH, 30)
+        } else { // no_socio
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+        }
+
+        val nuevoVencimiento = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+
+        val values = ContentValues().apply {
+            put("cuota_vencimiento", nuevoVencimiento)
+        }
+
+        val filasAfectadas = db.update("socios", values, "dni = ?", arrayOf(dni))
+        db.close()
+        return filasAfectadas
+    }
+
+    fun registrarSocio(
+        nombre: String,
+        apellido: String,
+        dni: Int,
+        direccion: String,
+        fechaVencimiento: String
+    ): Long {
+        val db = writableDatabase
+
+        val cursor = db.rawQuery("SELECT numero_carnet FROM socios WHERE numero_carnet IS NOT NULL ORDER BY id DESC LIMIT 1", null)
         var nuevoCarnet = "C0001"
 
         if (cursor.moveToFirst()) {
@@ -98,7 +230,7 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
             put("dni", dni)
             put("direccion", direccion)
             put("tipo", "socio")
-            put("cuota_vencimiento", vencimiento)
+            put("cuota_vencimiento", fechaVencimiento)
         }
 
         val resultado = db.insert("socios", null, values)
@@ -285,7 +417,6 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
 
     fun contarTotalClientes(): Int {
         val db = readableDatabase
-        // Una consulta simple para contar todas las filas en la tabla socios es más eficiente.
         val cursor = db.rawQuery("SELECT COUNT(*) FROM socios", null)
         var count = 0
         if (cursor.moveToFirst()) {
@@ -294,5 +425,52 @@ class DBHelper(context: Context): SQLiteOpenHelper(context, "Club.db",null,1) {
         cursor.close()
         db.close()
         return count
+    }
+
+    fun registrarPagoYRenovar(dni: Int, monto: Double, fecha: String): Int {
+        val db = writableDatabase
+        db.beginTransaction()
+
+        var filasAfectadas = 0
+
+        try {
+            val cursor = db.rawQuery("SELECT tipo FROM socios WHERE dni = ?", arrayOf(dni.toString()))
+            if (!cursor.moveToFirst()) {
+                cursor.close()
+                return 0
+            }
+
+            val tipoSocio = cursor.getString(0)
+            cursor.close()
+
+            val pagoValues = ContentValues().apply {
+                put("fecha_pago", fecha)
+                put("dni_socio", dni)
+                put("tipo_socio", tipoSocio)
+                put("monto", monto)
+            }
+            db.insert(TABLE_PAGOS, null, pagoValues)
+
+            val calendar = Calendar.getInstance()
+            if (tipoSocio == "socio") {
+                calendar.add(Calendar.DAY_OF_MONTH, 30)
+            } else { // no_socio
+                calendar.add(Calendar.DAY_OF_MONTH, 1)
+            }
+            val nuevoVencimiento = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+
+            val renovarValues = ContentValues().apply {
+                put("cuota_vencimiento", nuevoVencimiento)
+            }
+            filasAfectadas = db.update("socios", renovarValues, "dni = ?", arrayOf(dni.toString()))
+
+            db.setTransactionSuccessful()
+
+        } finally {
+            db.endTransaction()
+            db.close()
+        }
+
+        return filasAfectadas
     }
 }

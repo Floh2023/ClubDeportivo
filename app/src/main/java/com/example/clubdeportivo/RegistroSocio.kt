@@ -1,6 +1,5 @@
 package com.example.clubdeportivo
 
-import com.example.clubdeportivo.DBHelper
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -10,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class RegistroSocio : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,19 +86,23 @@ class RegistroSocio : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val resultado: Long
             val mensajeExito: String
 
-            if (switchSocio.isChecked) {
-                resultado = dbHelper.registrarSocio(nombre, apellido, dni, direccion)
-                mensajeExito = "Socio registrado correctamente"
+            val resultado: Long = if (switchSocio.isChecked) {
+                val calendar = Calendar.getInstance()
+                calendar.add(Calendar.MONTH, 1)
+                val dbDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val fechaVencimientoDB = dbDateFormat.format(calendar.time)
+                val displayDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val fechaVencimientoDisplay = displayDateFormat.format(calendar.time)
+                //val fechaVencimiento = dateFormat.format(calendar.time)
+                mensajeExito = "Socio registrado correctamente. Vence el: $fechaVencimientoDisplay"
+                dbHelper.registrarSocio(nombre, apellido, dni, direccion, fechaVencimientoDB)
             } else {
-                resultado = dbHelper.registrarNoSocio(nombre, apellido, dni, direccion)
                 mensajeExito = "No socio registrado correctamente"
+                dbHelper.registrarNoSocio(nombre, apellido, dni, direccion)
             }
 
-            // Registrar socio con carnet y vencimiento mensual
-            // val resultado = dbHelper.registrarSocio(nombre, dni, direccion)
             if (resultado > 0) {
                 Snackbar.make(
                     findViewById(android.R.id.content),

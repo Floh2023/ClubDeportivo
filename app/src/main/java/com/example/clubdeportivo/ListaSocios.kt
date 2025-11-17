@@ -25,21 +25,16 @@ class ListaSocios : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Reemplazá por el nombre real del layout si no es activity_lista_socios
+
         setContentView(R.layout.activity_lista_socios)
 
         dbHelper = DBHelper(this)
 
-        // IDs tal como aparecen en tu XML
         listaSociosLayout = findViewById(R.id.listaSocios)
         btnVolver = findViewById(R.id.btnCarnet)
         btnRegistroSocio = findViewById(R.id.btnRegistroSocio)
 
-        // Cargar lista desde la DB y mostrar
-        mostrarSociosRegistrados()
-
         btnVolver.setOnClickListener {
-            // Simplemente volvemos a la actividad anterior
             finish()
         }
 
@@ -49,20 +44,25 @@ class ListaSocios : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        mostrarSociosRegistrados()
+    }
+
     /**
      * Carga la lista de strings que devuelve obtenerSociosRegistrados()
      * y la dibuja en el LinearLayout respetando el diseño del layout XML:
      * - círculo con inicial, texto de detalle y checkbox a la derecha.
      */
     private fun mostrarSociosRegistrados() {
-        // Primero limpiamos lo que hubiera (tu XML tiene ítems de ejemplo; los removemos)
+
         listaSociosLayout.removeAllViews()
 
         try {
             val socios = dbHelper.obtenerSociosRegistrados()
             if (socios.isEmpty()) {
                 val tv = TextView(this).apply {
-                    text = "No hay socios registrados."
+                    text = "No hay clientes registrados."
                     textSize = 16f
                     gravity = Gravity.CENTER
                     setPadding(0, 24, 0, 24)
@@ -80,7 +80,7 @@ class ListaSocios : AppCompatActivity() {
             theme.resolveAttribute(android.R.attr.selectableItemBackground, outValue, true)
 
             for (s in socios) {
-                // Layout horizontal por fila (igual que en tu XML)
+
                 val fila = LinearLayout(this).apply {
                     orientation = LinearLayout.HORIZONTAL
                     gravity = Gravity.CENTER_VERTICAL
